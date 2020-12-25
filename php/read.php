@@ -18,14 +18,36 @@ $status = $stmt->execute();
 
 if ($status==false) {
   $error = $stmt->errorInfo(); 
-  exit('sqlError:'.$error[6]); // 失敗時􏰁エラー出力
-  } else {
-  $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+  exit('sqlError:'.$error[2]); // 失敗時􏰁エラー出力
+} else {
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
   $output = "";
   foreach ($result as $record) {
-    $output .= "<li>名前　　{$record["cattle_name"]}</li><li>ID　　　{$record["id_number"]}</li><li>誕生日　{$record["birthday"]}</li><li>性別　　{$record["gender"]}</li><li>特長　　{$record["feacher"]}</li><br>";
+    //誕生日から月齢を算出
+    //誕生日の年月日をそれぞれ取得
+    $birth_year = (int)date("Y", strtotime($record["birthday"]));
+    $birth_month = (int)date("m", strtotime($record["birthday"]));
+    $birth_day = (int)date("d", strtotime($record["birthday"]));
+    //現在の年月日を取得
+    $now_year = (int)date("Y");
+    $now_month = (int)date("m");
+    $now_day = (int)date("d");
+    
+    //月齢を計算
+    $age = ($now_year - $birth_year)*12 + ($now_month - $birth_month);
+    //「日」で月齢を微調整
+    if($now_day < $birth_day) {
+      $age--;
+    }
+    
+    // var_dump($age);
+    // exit();
+
+    $output .= "<li>名前　　{$record["cattle_name"]}</li><li>誕生日　{$record["birthday"]}</li><li>月齢　　{$age} ヶ月</li><li>性別　　{$record["gender"]}</li><li>特長　　{$record["feacher"]}</li><br>";
   } 
 }
+
 ?>
 
 <!DOCTYPE html>

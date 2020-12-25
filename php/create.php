@@ -13,6 +13,7 @@ if (
       $gender = $_POST['gender'];
       $img = $_POST['img'];
       $feacher = $_POST['feacher'];
+
       
       // DB接続情報
       $dbn = 'mysql:dbname=gsacf_d07_03;charset=utf8;port=3306;host=localhost';
@@ -23,24 +24,25 @@ if (
       try {
         $pdo = new PDO($dbn, $user, $pwd);
       } catch (PDOException $e) {
-          echo json_encode(["db error" => "{$e->getMessage()}"]);
-          exit();
-        }
+        echo json_encode(["db error" => "{$e->getMessage()}"]);
+        exit();
+      }
+      
+      //SQL作成&実行
+      $sql = 'INSERT INTO cattle_memo(id, cattle_name, id_number, birthday, gender, img, feacher) VALUES(NULL, :cattle_name, :id_number, :birthday, :gender, :img, :feacher)';
+      
+      //画像データ
+      // $img_data = file_get_contents($_FILES['image']['tmp_name']);
+      
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':cattle_name', $cattle_name, PDO::PARAM_STR); $stmt->bindValue(':id_number', $id_number, PDO::PARAM_STR); $stmt->bindValue(':birthday', $birthday, PDO::PARAM_STR); $stmt->bindValue(':gender', $gender, PDO::PARAM_STR); $stmt->bindValue(':img', $img, PDO::PARAM_STR); $stmt->bindValue(':feacher', $feacher, PDO::PARAM_STR);
+      $status = $stmt->execute(); // SQLを実行
 
-        //SQL作成&実行
-        $sql = 'INSERT INTO cattle_memo(id, cattle_name, id_number, birthday, gender, img, feacher) VALUES(NULL, :cattle_name, :id_number, :birthday, :gender, :img, :feacher)';
-        
-        //画像データ
-        // $img_data = file_get_contents($_FILES['image']['tmp_name']);
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':cattle_name', $cattle_name, PDO::PARAM_STR); $stmt->bindValue(':id_number', $id_number, PDO::PARAM_STR); $stmt->bindValue(':birthday', $birthday, PDO::PARAM_STR); $stmt->bindValue(':gender', $gender, PDO::PARAM_STR); $stmt->bindValue(':img', $img, PDO::PARAM_STR); $stmt->bindValue(':feacher', $feacher, PDO::PARAM_STR);
-        $status = $stmt->execute(); // SQLを実行
-        
-        if ($status == false) {
-            $error = $stmt->errorInfo();
-            exit('sqlError:' . $error[6]);
-          } else {
-              header('Location:read.php');
-            }
-?>
+      if ($status == false) {
+        $error = $stmt->errorInfo();
+        exit('sqlError:' . $error[2]);
+      } else {
+        header('Location:read.php');
+      }
+      
+      ?>

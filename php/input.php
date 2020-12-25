@@ -35,8 +35,8 @@
           <div class="input_item">
             <p class="color"></p>性別
           </div>
-          <input type="radio" name="gender" value="male"> 雄牛 ♂　
-          <input type="radio" name="gender" value="female"> 雌牛 ♀<br>
+          <input type="radio" name="gender" value="雄牛 ♂"> 雄牛 ♂　
+          <input type="radio" name="gender" value="雌牛 ♀"> 雌牛 ♀<br>
           <div class="input_item">
             <p class="color"></p>写真
           </div>
