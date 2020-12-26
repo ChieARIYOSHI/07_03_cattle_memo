@@ -1,4 +1,5 @@
 <?php
+
 // DB接続情報
 $dbn = 'mysql:dbname=gsacf_d07_03;charset=utf8;port=3306;host=localhost';
 $user = 'root';
@@ -15,6 +16,7 @@ try {
 $sql = 'SELECT * FROM cattle_memo';
 $stmt = $pdo->prepare($sql);
 $status = $stmt->execute();
+$img = $stmt->fetchObject();
 
 if ($status==false) {
   $error = $stmt->errorInfo(); 
@@ -33,21 +35,25 @@ if ($status==false) {
     $now_year = (int)date("Y");
     $now_month = (int)date("m");
     $now_day = (int)date("d");
-    
     //月齢を計算
     $age = ($now_year - $birth_year)*12 + ($now_month - $birth_month);
     //「日」で月齢を微調整
     if($now_day < $birth_day) {
       $age--;
     }
-    
     // var_dump($age);
     // exit();
 
-    $output .= "<li>名前　　{$record["cattle_name"]}</li><li>誕生日　{$record["birthday"]}</li><li>月齢　　{$age} ヶ月</li><li>性別　　{$record["gender"]}</li><li>特長　　{$record["feacher"]}</li><br>";
+    $output .= "<div class='cattle_info'>
+    <div class='image'>
+    <img src='image.php?id={$record['id']}' width='auto' height='100px'>
+    </div>
+    <div class='text'>
+    <li>名前　　{$record["cattle_name"]}</li><li>誕生日　{$record["birthday"]}</li><li>月齢　　{$age} ヶ月</li><li>性別　　{$record["gender"]}</li><li>特長　　{$record["feacher"]}</li><br>
+    </div>
+    </div>";
   } 
 }
-
 ?>
 
 <!DOCTYPE html>

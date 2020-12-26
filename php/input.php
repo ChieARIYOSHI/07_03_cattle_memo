@@ -16,7 +16,7 @@
       <h1>新しい牛さんを登録</h1>
     </div>
 
-    <form action="create.php" method="POST">
+    <form action="create.php" method="POST" enctype="multipart/form-data">
       <fieldset>
         <!-- <a href="todo_read.php">一覧画面</a> -->
         <div class="input_form">

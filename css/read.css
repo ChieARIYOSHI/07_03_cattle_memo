@@ -37,6 +37,23 @@ fieldset {
 
 #output {
   list-style: none;
+  padding-left: 0px;
+}
+
+.cattle_info {
+  display: flex;
+}
+
+.image {
+  width: 140px;
+  object-fit: cover;
+  display: flex;
+  justify-content: center;
+}
+
+.text {
+  font-size: 12px;
+  margin-left: 20px;
 }
 
 .submit_btn {
